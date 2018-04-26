@@ -1,0 +1,5 @@
+# Travis CI build and test script.
+language: java
+jdk:
+  - oraclejdk8
+  - openjdk8
