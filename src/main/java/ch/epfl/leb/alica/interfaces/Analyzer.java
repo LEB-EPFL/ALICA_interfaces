@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 2017 Laboratory of Experimental Biophysics
+ * Copyright (C) 2017-2018 Laboratory of Experimental Biophysics
  * Ecole Polytechnique Federale de Lausanne
  * 
  * Author: Marcel Stefko
@@ -24,31 +24,32 @@ import ij.gui.Roi;
 
 
 /**
- * Performs a fluorophore density estimate on an input image.
+ * Processes an image or series of images.
  * 
- * An analyzer receives images, processes them, and adjusts its internal state
- * (and output) accordingly. ALICA can request the output at any time.
+ * Analyzers compute quantities from an image or series of images that are
+ * relevant for real-time control. These quantities can include, for example,
+ * the number of fluorescent molecules or the resolution.
  * 
  * @author Marcel Stefko
  */
 public interface Analyzer {
 
     /**
-     * Process the next image and adjust the analyzer's internal state.
+     * Processes an image and adjust the analyzer's internal state to reflect the results of the calculation.
      * 
      * This method is called after each new image acquisition by the
-     * AnalysisWorker. You can use the synchronized(this) statement in the
-     * Analyzer to ensure that no output readout happens during code execution.
-     * Try to keep analysis time as short as possible.
+     * AnalysisWorker. You can use the synchronized(this) statement within the
+     * body of an implementation of an Analyzer to ensure that no output readout
+     * happens during code execution.
      * 
-     * @param image image to be processed as 1D raw pixel data. Inside this
-     * method, you can then set it to an IJ.ImageProcessor using
-     * ImageProcessor.setPixels(image) or turn into 1D short array using 
-     * (short[]) image.
-     * @param image_width width in pixels
-     * @param image_height height in pixels
-     * @param pixel_size_um length of one pixel side in micrometers
-     * @param time_ms time of image acquisition in milliseconds
+     * When implementing new Analyzers, try to keep the computation time as
+     * short as possible.
+     * 
+     * @param image The image to be processed as 1D raw pixel data.
+     * @param image_width Image width in pixels.
+     * @param image_height Image height in pixels.
+     * @param pixel_size_um Length of a side of a square pixel in micrometers.
+     * @param time_ms Image acquisition time in milliseconds.
      */
     public void processImage(
             Object image,
@@ -59,29 +60,36 @@ public interface Analyzer {
     );
     
     /**
-     * Return intermittent output of the analyzer based on current internal state.
-     * This is just for informational purposes. Internal state of the controller 
-     * should stay the same.
-     *  getBatchOutput() is used for values to be passed to the controller.
-     * @return output value of the analyzer to be plotted by the GUI.
+     * Returns the intermittent output of the analyzer.
+     * 
+     * This is used to read the current output of the analyzer; its internal
+     * state is unchanged.
+     * 
+     * {@link #getBatchOutput() getBatchOutput}() should be used to obtain output
+     * that will be passed to the controller.
+     * 
+     * @return The analyzer's current output value.
      */
     public double getIntermittentOutput();
     
     /**
-     * Returns output of the analyzer to be used by a controller.
+     * Returns the output of the analyzer for Controller input.
      * 
      * If no output can be provided (such as when there are no new analyzed
      * images), Double.NaN should be returned. This method can also modify the
-     * internal state of the analyzer (such as flushing intermittent value
+     * internal state of the analyzer (such as flushing the intermittent value
      * cache).
-     * @return output value of the analyzer to be used by the controller
+     * 
+     * @return The analyzer's current output value for use by the controller
+     * @see ch.epfl.leb.alica.interfaces.Controller
      */
     public double getBatchOutput();
     
     /**
-     * Sets the region of interest in the image, so that only a section of the
-     * whole image is analyzed.
-     * @param roi ROI to constrain to
+     * Sets the region of interest in the image so that only a portion of the whole image is analyzed.
+     * 
+     * @param roi The Roi object corresponding to the region.
+     * @see ij.gui.Roi
      */
     public void setROI(Roi roi);
     
@@ -91,22 +99,27 @@ public interface Analyzer {
     public void dispose();
     
     /**
+     * Returns a unique name for the analyzer.
      * 
-     * @return unique name of the analyzer.
+     * 
+     * @return The analyzer's name.
      */
     public String getName();
     
     /**
+     * Returns the analyzer's status panel that will be displayed in the GUI.
+     * 
+     * If no panel is implemented, this method should return null. In this case, 
+     * the corresponding space in the MonitorGUI will appear blank.
      *
-     * @return status panel of this Analyzer to be placed into MonitorGUI, or 
-     * null if no such panel is implemented (space in MonitorGUI will remain
-     * blank).
+     * @return The status panel of the analyzer, or null.
      */
     public AnalyzerStatusPanel getStatusPanel();
     
     /**
+     * Returns a short description of the values returned by the analyzer.
      * 
-     * @return A short string describing the return values of the analyzer.
+     * @return A short description of the values returned by the analyzer.
      */
     public String getShortReturnDescription();
     

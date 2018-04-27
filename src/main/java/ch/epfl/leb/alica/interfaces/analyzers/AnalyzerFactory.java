@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 2017 Laboratory of Experimental Biophysics
+ * Copyright (C) 2017-2018 Laboratory of Experimental Biophysics
  * Ecole Polytechnique Federale de Lausanne
  * 
  * Author: Marcel Stefko

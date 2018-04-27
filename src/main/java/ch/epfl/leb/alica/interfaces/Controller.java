@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 2017 Laboratory of Experimental Biophysics
+ * Copyright (C) 2017-2018 Laboratory of Experimental Biophysics
  * Ecole Polytechnique Federale de Lausanne
  * 
  * Author: Marcel Stefko
@@ -23,48 +23,62 @@ import ch.epfl.leb.alica.interfaces.controllers.ControllerStatusPanel;
 
 
 /**
- * A Controller receives the output of the Analyzer as input, and then
- * adjusts its internal state accordingly. It can be asked for output
- * at any time by the WorkerThread.
+ * Adjusts control parameters in response to values provided by the analyzer.
+ * 
+ * A controller receives the output of the analyzer as input, and then adjusts
+ * its internal state accordingly. It can be asked for its state at any time by
+ * the WorkerThread.
+ * 
  * @author Marcel Stefko
  */
 public interface Controller {
     /**
-     * Sets new_setpoint value
-     * @param new_setpoint desired input signal value (setpoint)
+     * Sets a new values for the controller's setpoint.
+     * 
+     * @param new_setpoint The desired value for the process variable.
      */
     public void setSetpoint(double new_setpoint);
     
     /**
-     * @return current setpoint value
+     * Returns the current value for the setpoint.
+     * 
+     * @return The current setpoint value.
      */
     public double getSetpoint();
     
     /**
      * Receives next input from the WorkerThread (this the batched output of the
      * analyzer).
-     * @param value input to be processed. This input can be Double.NaN, if 
-     * the Analyzer can not produce an output for some reason.
-     * @return same as getCurrentOutput()
+     * 
+     * This method must be able to accept Double.NaN, which the analyzer will
+     * produce if if can not produce an output for some reason.
+     * 
+     * @param value The analyzer's input value.
+     * @return The controller's new output value for the control signal.
      */
     public double nextValue(double value);
     
     /**
-     * Produce an output value based on internal state (the output value is
-     * fed into the laser)
-     * @return output value (desired laser power)
+     * Returns an output value derived from the controller's internal state.
+     * 
+     * @return The controller's new output value for the control signal.
      */
     public double getCurrentOutput();
     
     /**
-     *
-     * @return unique name of the controller
+     * Returns a unique name for the controller.
+     * 
+     * @return A unique name for the controller.
      */
     public String getName();
     
     /**
-     *
-     * @return status panel to be placed into the MonitorGUI, or null
+     * Returns the controller's status panel that will be displayed in the GUI.
+     * 
+     * If no panel is implemented, this method should return null. In this case, 
+     * the corresponding space in the MonitorGUI will appear blank.
+     * 
+     * @return The status panel of the controller, or null.
      */
     public ControllerStatusPanel getStatusPanel();
 }

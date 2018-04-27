@@ -10,7 +10,6 @@ Interfaces to the primary components of ALICA.
 
 .. toctree::
    :maxdepth: 1
-   :caption: Contents:
 
    _javasphinx/packages
 
@@ -27,11 +26,8 @@ Relationship with ALICA and SASS
    :align: center
    :alt: Relationships between the modules of ALICA and SASS.
 
-Acknowledgements
-================
-
 Authors
--------
+=======
 
 - `Marcel Štefko <https://github.com/MStefko>`_
 - `Kyle M. Douglass <https://kmdouglass.github.io>`_
