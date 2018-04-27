@@ -163,5 +163,6 @@ read_the_docs_build = os.environ.get('READTHEDOCS', None) == 'True'
 
 if read_the_docs_build:
     print('calling javasphinx')
-    subprocess.call('javasphinx-apidoc -u -o _javasphinx/ ../../src/', shell=True)
+    subprocess.call('javasphinx-apidoc -u -o _javasphinx/ ../src/',
+                    shell=True)
 
