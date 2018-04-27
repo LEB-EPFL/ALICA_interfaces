@@ -1,5 +1,14 @@
-# Travis CI build and test script.
 language: java
 jdk:
-  - oraclejdk8
-  - openjdk8
+- oraclejdk8
+- openjdk8
+deploy:
+  provider: releases
+  api_key:
+    secure: JvskBt1hZcEkKE0yod+cWbFF7YUn/nJYt67KS20yrNUk+vPxUEGxZ9/hEFYLML4IkPn5ogUsJPTM7sR/gfBjPa+Bcpij3a302tWWzW1C0uCG0nlvL9X0cOSHcEq2QoRhCcId6ITg/6uR5FMeBc8kxyVvGT2KloFXVJWIkEJIZWee7s8UNutxHbfywvUJM2Ir1fs6KEEKfnKQ7Llovir51C7MRKlh6mZiYjVSO8/dnRSXXoOrfXIV7l/sX8Uk3IJ8Xj6J3tBbmTkFECW2uD7HnCOUy/SGKvpQBgUjoSTWeH9OWGtb2s8nzPDECShEx038XdQKj85rnw9CjCXI3SM6zYRIVFI842IKiOl8IbHJQwuxtZ3PYsvSPUCBTOoSA2dmd3iYUuiGJ9PWMV8VgjCieBmArEapQ1V71RH2Zb8wIfNvl6CR8ST2zdCSqL00DJJqRpb6U7mE3LDgGeTz66p9che6b3xytR/MlMOkzAbcmeYHuEgvrZbjrSdOKWQtYgaO8yHmYqACLgF6CQmQM1aowbBOniVY47xCPwVFwTsdne9mqSdah9JhEawbXETRA1QAxNaQ+YshVYwcul8cFm/Vv8Scxlgue0Vz2QXcWxr5MwLi0LI5dqfLccHwf+REpRWeXI9LbajWfIsMpFLBUGBtqOx4isC4kkzE9uy9efM33s4=
+  file_glob: true
+  file: target/ALICA_interfaces-*.jar
+  skip_cleanup: true
+  on:
+    repo: LEB-EPFL/ALICA_interfaces
+    tags: true
