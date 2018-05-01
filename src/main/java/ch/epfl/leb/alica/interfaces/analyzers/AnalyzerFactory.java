@@ -21,19 +21,14 @@ package ch.epfl.leb.alica.interfaces.analyzers;
 
 import ch.epfl.leb.alica.interfaces.AbstractFactory;
 import ch.epfl.leb.alica.interfaces.Analyzer;
-import ij.IJ;
 import ij.io.PluginClassLoader;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.ServiceConfigurationError;
-import java.util.ServiceLoader;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.logging.Level;
@@ -80,7 +75,12 @@ class AnalyzerSetupPanelLoader {
         // print urls of files in mmplugins folder
         for (URL u: class_loader.getURLs()) {
             // if it doesnt match desired filename, skip it
-            if (!u.toString().toUpperCase().contains("ALICA_")) {
+            if (!u.toString().toUpperCase().contains("ALICA_") ||
+                !u.toString().contains(".jar")) {
+                continue;
+            } else if (u.toString().contains("ALICA_interfaces")) {
+                 //This prevents a non-critical error from being raised by
+                 //forcing the dynamic class loader to skip the interfaces .jar.
                 continue;
             } else {
                 Logger.getLogger(AnalyzerSetupPanelLoader.class.getName()).log(Level.FINE, "Loading ALICA analyzers from:\n" + u.toString());

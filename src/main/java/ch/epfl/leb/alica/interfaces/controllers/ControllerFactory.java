@@ -94,7 +94,12 @@ class ControllerSetupPanelLoader {
         // print urls of files in mmplugins folder
         for (URL u: class_loader.getURLs()) {
             // if it doesnt match desired filename, skip it
-            if (!u.toString().toUpperCase().contains("ALICA_")) {
+            if (!u.toString().toUpperCase().contains("ALICA_") ||
+                !u.toString().contains(".jar")) {
+                continue;
+            } else if (u.toString().contains("ALICA_interfaces")) {
+                 //This prevents a non-critical error from being raised by
+                 //forcing the dynamic class loader to skip the interfaces .jar.
                 continue;
             } else {
                 Logger.getLogger(ControllerSetupPanelLoader.class.getName()).log(Level.FINE, "Loading ALICA analyzers from:\n" + u.toString());
@@ -151,3 +156,4 @@ class ControllerSetupPanelLoader {
         return retval;
     }
 }
+
